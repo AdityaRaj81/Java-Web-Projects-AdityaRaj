@@ -1,25 +1,19 @@
-const apiUrl = "http://localhost:8080/api/game";
-
-function startGame() {
-  fetch(`${apiUrl}/new`)
-    .then(res => res.text())
-    .then(msg => {
-      document.getElementById("message").innerText = msg;
-    });
-}
-
 function submitGuess() {
-  const guess = document.getElementById("guess").value;
+  const userInput = document.getElementById('guessInput').value;
 
-  fetch(`${apiUrl}/guess`, {
-    method: "POST",
+  fetch('https://numbergame-production.up.railway.app/api/game/guess', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: guess
+    body: 'number=' + encodeURIComponent(userInput)
   })
-    .then(res => res.text())
-    .then(msg => {
-      document.getElementById("message").innerText = msg;
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('result').innerText = data;
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Something went wrong!");
     });
 }
